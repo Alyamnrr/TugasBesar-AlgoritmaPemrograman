@@ -15,6 +15,7 @@ type Proyek struct {
 	terkumpul float64
 	donatur   int
 }
+
 var IDberikutnya = 1
 
 func main() {
@@ -37,8 +38,7 @@ func main() {
 		fmt.Println("0. Keluar")
 		fmt.Print("Pilihan: ")
 
-		pilihan = inputInteger()
-
+		pilihan = BacaAngka()
 
 		switch pilihan {
 		case 1:
@@ -64,7 +64,7 @@ func main() {
 			fmt.Println("Kategori:")
 			fmt.Println("1. Kesehatan, 2. Pendidikan, 3. Lingkungan, 4. Teknologi, 5. Sosial")
 			fmt.Print("Pilih (1-5): ")
-			kat := inputIntegerRange(1, 5)
+			kat := BacaAngkaRata(1, 5)
 			kategoriList := []string{"Kesehatan", "Pendidikan", "Lingkungan", "Teknologi", "Sosial"}
 			proyek[jumlahproyek].kategori = kategoriList[kat-1]
 
@@ -81,7 +81,7 @@ func main() {
 			fmt.Print("Nama Proyek: ")
 			scanner.Scan()
 			nama := scanner.Text()
-			found := false
+			temukan := false
 			for i := 0; i < jumlahproyek; i++ {
 				if proyek[i].nama == nama {
 					fmt.Print("Jumlah Donasi (Rp): ")
@@ -90,11 +90,11 @@ func main() {
 					proyek[i].donatur++
 					fmt.Println("Donasi berhasil. Terima Kasih atas donasimu!")
 					tampilkandetail(proyek[i])
-					found = true
+					temukan = true
 					break
 				}
 			}
-			if !found {
+			if !temukan {
 				fmt.Println("Proyek tidak ditemukan, silahkan tambahkan proyek terlebih dahulu.")
 			}
 
@@ -148,22 +148,22 @@ func main() {
 			scanner.Scan()
 			nama := scanner.Text()
 
-			low := 0
-			high := jumlahproyek - 1
-			found := false
-			for low <= high {
-				mid := (low + high) / 2
-				if proyek[mid].nama == nama {
-					tampilkandetail(proyek[mid])
-					found = true
+			rendah := 0
+			tinggi := jumlahproyek - 1
+			temukan := false
+			for rendah <= tinggi {
+				tengah := (rendah + tinggi) / 2
+				if proyek[tengah].nama == nama {
+					tampilkandetail(proyek[tengah])
+					temukan = true
 					break
-				} else if proyek[mid].nama < nama {
-					low = mid + 1
+				} else if proyek[tengah].nama < nama {
+					rendah = tengah + 1
 				} else {
-					high = mid - 1
+					tinggi = tengah - 1
 				}
 			}
-			if !found {
+			if !temukan {
 				fmt.Println("Tidak ditemukan.")
 			}
 
@@ -247,10 +247,10 @@ func tampilkandetail(p Proyek) {
 	if persen > 100 {
 		persen = 100
 	}
-	tampilkanProgressBar(persen)
+	tampilkanprogressBar(persen)
 }
 
-func tampilkanProgressBar(p float64) {
+func tampilkanprogressBar(p float64) {
 	bar := "["
 	for i := 0; i < 20; i++ {
 		if i < int(p/5) {
@@ -263,7 +263,7 @@ func tampilkanProgressBar(p float64) {
 	fmt.Println(bar)
 }
 
-func inputInteger() int {
+func BacaAngka() int {
 	var i int
 	for {
 		_, err := fmt.Scanln(&i)
@@ -276,9 +276,9 @@ func inputInteger() int {
 	}
 }
 
-func inputIntegerRange(min, max int) int {
+func BacaAngkaRata(min, max int) int {
 	for {
-		val := inputInteger()
+		val := BacaAngka()
 		if val >= min && val <= max {
 			return val
 		}
